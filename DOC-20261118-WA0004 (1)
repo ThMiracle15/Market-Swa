@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Market Manager</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;family=Noto+Sans+Arabic:wght@400;500;700&amp;display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6F5F0;--cd:#fff;--ink:#1B1F1A;--mu:#5C6358;--ln:#E6E3D8;--ac:#1F7A4D;--ac2:#CFE5D8;--fd:#8A9084;--on:#fff;--rd:#B3261E;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141713;--cd:#1E221C;--ink:#EEF0EA;--mu:#A7AE9F;--ln:#2C312A;--ac:#5DBB8A;--ac2:#2A4A39;--fd:#7B8374;--on:#0E1A12;--rd:#F2766C;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#141713;--cd:#1E221C;--ink:#EEF0EA;--mu:#A7AE9F;--ln:#2C312A;--ac:#5DBB8A;--ac2:#2A4A39;--fd:#7B8374;--on:#0E1A12;--rd:#F2766C;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.4 Inter,'Noto Sans Arabic',system-ui,sans-serif}
+body{padding-left:64px}#app{max-width:520px;margin:0 auto;padding:20px 12px 96px}
+h1{font-size:24px;margin:0 0 16px}h2{font-size:16px;margin:0}
+button,input,select{font:inherit;color:inherit}button{cursor:pointer}
+.card{background:var(--cd);border-radius:20px;padding:16px;margin-bottom:12px}
+.lb,.sm{font-size:13px;color:var(--mu)}.big{font-size:32px;font-weight:700}.ac{color:var(--ac)}
+.row2{display:flex;gap:12px}.row2>*{flex:1;min-width:0}.row2 .big{font-size:22px}
+.seg{display:flex;gap:6px;margin-bottom:12px}.seg button{flex:1;height:44px;border:0;border-radius:12px;background:var(--cd)}.seg .on{background:var(--ac);color:var(--on);font-weight:500}
+.bars{display:flex;align-items:flex-end;gap:8px;height:96px;margin-top:12px}.bars i{flex:1;background:var(--ac2);border-radius:6px;display:flex;align-items:flex-end}.bars b{width:100%;background:var(--ac);border-radius:6px}
+.days{display:flex;gap:8px;font-size:11px;color:var(--mu);text-align:center;margin-top:4px}.days span{flex:1}
+.sh{display:flex;justify-content:space-between;align-items:center;margin:20px 0 8px}
+.lnk{border:0;background:none;color:var(--ac);min-height:44px;padding:0 4px}
+.it{display:flex;gap:8px;align-items:center;background:var(--cd);border-radius:16px;padding:8px;padding-inline-start:12px;margin-bottom:8px}
+.ib{display:flex;gap:12px;align-items:center;flex:1;min-width:0;border:0;background:none;text-align:start;padding:0;min-height:48px}
+.th{width:48px;height:48px;flex:none;border-radius:12px;background:var(--ac2);object-fit:cover;display:flex;align-items:center;justify-content:center;color:var(--ac)}
+.nm{font-weight:500}.low{color:var(--rd);font-weight:500}
+.sell{height:44px;min-width:56px;border:0;border-radius:12px;background:var(--ac);color:var(--on);font-weight:500;padding:0 12px}.sell:disabled{opacity:.4}
+.add{width:100%;height:48px;border:2px dashed var(--ac);border-radius:14px;background:none;color:var(--ac);font-weight:700;margin:4px 0 8px}
+nav{position:fixed;inset:0 auto 0 0;width:64px;z-index:5;display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--cd);border-right:1px solid var(--ln);padding:calc(16px + env(safe-area-inset-top,0px)) 0 calc(16px + env(safe-area-inset-bottom,0px))}
+nav button{width:60px;border:0;background:none;color:var(--mu);font-size:11px;padding:4px 0;display:flex;flex-direction:column;align-items:center;gap:4px}nav .ic{width:44px;height:30px;border-radius:15px;display:flex;align-items:center;justify-content:center;transition:background-color .2s}nav .on{color:var(--ac);font-weight:700}nav .on .ic{background:var(--ac2)}
+.ov{position:fixed;inset:0;z-index:9;background:rgba(0,0,0,.45);display:flex;align-items:flex-end;justify-content:center}
+.sh2{background:var(--bg);width:100%;max-width:480px;max-height:92%;overflow:auto;border-radius:24px 24px 0 0;padding:20px 16px calc(20px + env(safe-area-inset-bottom,0px))}
+label{display:block;font-size:13px;color:var(--mu);margin:12px 0 4px}
+input,select{width:100%;height:48px;border:1px solid var(--fd);border-radius:12px;padding:0 12px;background:var(--cd)}
+.pri{width:100%;height:52px;border:0;border-radius:14px;background:var(--ac);color:var(--on);font-weight:700;margin-top:16px}
+.sec{width:100%;height:44px;border:0;background:none;color:var(--mu);margin-top:4px}.del{color:var(--rd)}
+.pad{display:grid;grid-template-columns:repeat(3,72px);gap:16px;justify-content:center;direction:ltr;margin:16px 0}.pad button{width:72px;height:72px;border:0;border-radius:50%;background:var(--cd);font-size:26px;font-weight:500}
+.dots{display:flex;justify-content:center;gap:16px;margin:16px 0}.dots i{width:16px;height:16px;border-radius:50%;border:2px solid var(--fd)}.dots .f{background:var(--ac);border-color:var(--ac)}
+.ctr{text-align:center}
+.qb{width:44px;height:44px;flex:none;border:0;border-radius:50%;background:var(--ac2);color:var(--ac);font-size:22px;font-weight:700}
+.ln{display:flex;align-items:center;gap:8px;margin-top:8px}.ln .nm{flex:1;min-width:0}.ln b{min-width:24px;text-align:center}.ln .sm{min-width:64px;text-align:end}
+.stp{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--cd);border-radius:14px;padding:4px}.stp b{min-width:24px;text-align:center;font-size:18px}
+.si{width:36px;height:36px;flex:none;border-radius:10px;background:var(--ac2);display:flex;align-items:center;justify-content:center;font-size:20px}
+.hero{width:100%;height:200px;border-radius:16px;object-fit:cover;background:var(--ac2);display:flex;align-items:center;justify-content:center;color:var(--ac);margin-bottom:12px}
+.in>*{animation:slide .4s cubic-bezier(.2,.8,.2,1) both}.in>:nth-child(2){animation-delay:.04s}.in>:nth-child(3){animation-delay:.08s}.in>:nth-child(4){animation-delay:.12s}.in>:nth-child(5){animation-delay:.16s}.in>:nth-child(n+6){animation-delay:.2s}
+.stp b{animation:dot .2s cubic-bezier(.3,1.6,.5,1)}.cb.bump{animation:bump .3s cubic-bezier(.3,1.6,.5,1)}
+.ok{position:fixed;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;pointer-events:none}.ok i{width:96px;height:96px;border-radius:50%;background:var(--ac);color:var(--on);display:flex;align-items:center;justify-content:center;animation:okp .9s cubic-bezier(.2,.8,.2,1) forwards;box-shadow:0 8px 32px rgba(0,0,0,.3)}
+@keyframes slide{from{opacity:0;transform:translateY(12px)}}@keyframes bump{40%{transform:scale(1.05)}}@keyframes okp{0%{transform:scale(.3);opacity:0}30%{transform:scale(1.1);opacity:1}70%{transform:scale(1);opacity:1}100%{transform:scale(1);opacity:0}}
+.cb{position:fixed;z-index:6;inset-inline:80px 16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));height:52px;border:0;border-radius:14px;background:var(--ac);color:var(--on);font-weight:700;display:flex;align-items:center;justify-content:space-between;padding:0 16px;box-shadow:0 4px 16px rgba(0,0,0,.25)}
+.pri:disabled{opacity:.4}
+.sh.sx{margin:12px 0 4px}.sg{flex:1;min-width:0;margin:0}
+.sb{display:flex;align-items:center;gap:8px;width:100%;min-height:48px;border:0;background:none;padding:0;text-align:start}.sb .nm{flex:1;min-width:0;font-weight:700}
+.cv{width:44px;height:44px;flex:none;border:0;background:none;color:var(--ac);display:flex;align-items:center;justify-content:center;padding:0}.cv svg{width:32px;height:32px;padding:6px;border-radius:50%;background:var(--ac2);transition:transform .2s}.cv.o svg{transform:rotate(180deg)}
+.bd.o{animation:slide .25s cubic-bezier(.2,.8,.2,1) both}
+#ts{position:fixed;inset-inline:80px 16px;bottom:calc(24px + env(safe-area-inset-bottom,0px));margin:auto;width:fit-content;max-width:calc(100% - 96px);background:var(--ink);color:var(--bg);padding:12px 16px;border-radius:14px;z-index:10;display:none;align-items:center;gap:8px;animation:up .25s cubic-bezier(.2,.8,.2,1)}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+button{transition:transform .12s,background-color .2s,opacity .2s}button:active:not(:disabled){transform:scale(.95)}
+.in{animation:fade .28s ease-out}.it{transition:background-color .6s}.it.pop{animation:flash .7s ease-out}
+.fl{position:fixed;z-index:20;font-weight:700;color:var(--ac);pointer-events:none;transform:translateX(-50%);animation:rise .8s cubic-bezier(.2,.8,.2,1) forwards}
+.bars.an i{transform-origin:bottom;animation:grow .55s cubic-bezier(.2,.8,.2,1) both}
+.dots .n{animation:dot .2s cubic-bezier(.3,1.6,.5,1)}.dots.sk{animation:shake .35s}
+.sh2.up{animation:up .28s cubic-bezier(.2,.8,.2,1)}.ov.fd{animation:fade .2s}
+@keyframes fade{from{opacity:0}}@keyframes up{from{transform:translateY(24px);opacity:0}}@keyframes flash{30%{background:var(--ac2)}}
+@keyframes rise{to{transform:translate(-50%,-48px);opacity:0}}@keyframes grow{from{transform:scaleY(0)}}@keyframes dot{from{transform:scale(.4)}}@keyframes shake{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+@media (prefers-reduced-motion:reduce){*,::before,::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="ts" role="status"></div>
+<script>
+const K='market-manager-v1',D=864e5,g=x=>document.getElementById(x),E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const T={en:{shop:'Shop code',shopn:'Use the same code on every phone. Keep it private.',conn2:'Connect',sch:'Use at least 8 letters or numbers',setup:'Add your Firebase settings to the file first.',exp:'Export backup',imp2:'Import backup',imc:'Replace all current data with this backup?',imd:'Backup loaded',imx:'Couldn’t read this backup',conn:'Connecting…',offl:'Can’t reach the shared data. Check your internet connection.',syn:'Couldn’t save to the shared data.',imp:'Your data moved to shared storage',more:'Show more',icon:'Icon',phe:'Couldn’t load this photo',add:'Add',cart:'Cart',total:'Total',clear:'Clear cart',check:'Save order',hist:'History',ord:'Order',placed:'Order saved',empty:'Your cart is empty',nord:'No orders yet',items:'Items',ov:'Overview',buy:'Purchase',adm:'Admin',today:'Today',week:'Week',month:'Month',year:'Year',rev:'Revenue',pro:'Profit',spent:'Purchases',margin:'margin',top:'Top sellers',none:'Nothing yet',sell:'Sell',low:'Low',cost:'Cost',price:'Sell price',stock:'In stock',alert:'Low-stock alert',name:'Name',sec:'Section',save:'Save',del:'Delete',cancel:'Cancel',edit:'Edit',addi:'+ Add item',adds:'+ New section',photo:'Add photo',chg:'Change photo',ppu:'Profit per unit',qty:'Quantity',date:'Date',item:'Item',costu:'Cost per unit',savep:'Save purchase',recent:'Recent purchases',noit:'Add an item first.',pe:'Enter your admin code',pn:'Create a 4-digit admin code',pc:'Confirm the code',pbad:'Wrong code',pmis:'Codes don’t match',lang:'Language',cur:'Currency symbol',chgp:'Change admin code',lock:'Lock admin',note:'Data is shared between your phones through Firebase.',full:'Couldn’t save: storage is full.',saved:'Saved',secfull:'Remove its items first.',sure:'Tap again to delete',eit:'Edit item',nit:'New item',esc:'Edit section',nsc:'New section'},
+ar:{shop:'رمز المتجر',shopn:'استخدم الرمز نفسه على كل الهواتف. أبقِه سريًا.',conn2:'اتصال',sch:'استخدم 8 أحرف أو أرقام على الأقل',setup:'أضف إعدادات Firebase إلى الملف أولًا.',exp:'تصدير نسخة احتياطية',imp2:'استيراد نسخة احتياطية',imc:'استبدال كل البيانات الحالية بهذه النسخة؟',imd:'تم تحميل النسخة',imx:'تعذّرت قراءة النسخة',conn:'جارٍ الاتصال…',offl:'تعذّر الوصول إلى البيانات المشتركة. تحقق من اتصال الإنترنت.',syn:'تعذّر الحفظ في البيانات المشتركة.',imp:'تم نقل بياناتك إلى التخزين المشترك',more:'عرض المزيد',icon:'الأيقونة',phe:'تعذّر تحميل هذه الصورة',add:'إضافة',cart:'السلة',total:'الإجمالي',clear:'تفريغ السلة',check:'حفظ الطلب',hist:'السجل',ord:'طلب',placed:'تم حفظ الطلب',empty:'السلة فارغة',nord:'لا توجد طلبات بعد',items:'الأصناف',ov:'نظرة عامة',buy:'مشتريات',adm:'الإدارة',today:'اليوم',week:'الأسبوع',month:'الشهر',year:'السنة',rev:'الإيرادات',pro:'الربح',spent:'المشتريات',margin:'هامش',top:'الأكثر مبيعًا',none:'لا يوجد شيء بعد',sell:'بيع',low:'منخفض',cost:'التكلفة',price:'سعر البيع',stock:'في المخزون',alert:'تنبيه المخزون المنخفض',name:'الاسم',sec:'القسم',save:'حفظ',del:'حذف',cancel:'إلغاء',edit:'تعديل',addi:'+ إضافة صنف',adds:'+ قسم جديد',photo:'إضافة صورة',chg:'تغيير الصورة',ppu:'الربح للوحدة',qty:'الكمية',date:'التاريخ',item:'الصنف',costu:'التكلفة للوحدة',savep:'حفظ المشتريات',recent:'آخر المشتريات',noit:'أضف صنفًا أولًا.',pe:'أدخل رمز الإدارة',pn:'أنشئ رمز إدارة من 4 أرقام',pc:'أكّد الرمز',pbad:'الرمز غير صحيح',pmis:'الرمزان غير متطابقين',lang:'اللغة',cur:'رمز العملة',chgp:'تغيير رمز الإدارة',lock:'قفل الإدارة',note:'البيانات مشتركة بين هواتفك عبر Firebase.',full:'تعذّر الحفظ: مساحة التخزين ممتلئة.',saved:'تم الحفظ',secfull:'احذف أصنافه أولًا.',sure:'اضغط مرة أخرى للحذف',eit:'تعديل الصنف',nit:'صنف جديد',esc:'تعديل القسم',nsc:'قسم جديد'}};
+let LG={};try{LG=JSON.parse(localStorage.getItem(K))||{}}catch(e){}
+let S={lang:'en',cur:'$',pin:'',it:[],sec:[],log:[],on:0},DB=null,rd=0,fail=0,R={sec:{},it:{},log:{},cfg:''},view='items',per='week',admin=false,M=null,P=null,anim=0,cart={};
+try{S.lang=localStorage.getItem(K+'-lang')||LG.lang||'en'}catch(e){}
+let OP={},TG=null;
+const DI={s0:'🍟',s1:'🥤',s2:'🍭',s3:'🍬'},IL=['🍟','🥤','🍬','🍭','🍫','🍪','🥛','🧃','🍞','🍎','🧼','🛒'];
+const t=k=>T[S.lang][k]||k,$=n=>S.cur+(S.cur.length>1?'\u00a0':'')+(+n||0).toLocaleString('en-US',{maximumFractionDigits:2}),uid=()=>Math.random().toString(36).slice(2,9);
+const FB={apiKey:'AIzaSyByR_Ldm9pZRuR2uaS1-B7eADe5ASQsHgg',authDomain:'market-swa.firebaseapp.com',projectId:'market-swa',appId:'1:312661493998:web:67f5a0b977de044854cbff'};
+let SHOP='';try{SHOP=localStorage.getItem(K+'-shop')||''}catch(e){}
+const SC0=Math.random().toString(36).slice(2,8)+Math.random().toString(36).slice(2,8);
+function save(){try{localStorage.setItem(K+'-lang',S.lang)}catch(e){}sync();return 1}
+const J=o=>JSON.stringify(o,Object.keys(o).sort());
+async function sync(){if(!DB)return;const w=[],ck=(m,id,d,p)=>{const j=J(d);if(R[m][id]!==j){R[m][id]=j;w.push(()=>DB.doc(p+'/'+id).set(d))}};
+S.sec.forEach((s,k)=>ck('sec',s.id,{n:s.n,ic:s.ic||'',ord:k},'sections'));
+S.it.forEach(i=>{const d=JSON.parse(JSON.stringify(i));delete d.id;ck('it',i.id,d,'items')});
+[['sec',S.sec,'sections'],['it',S.it,'items']].forEach(([m,a,p])=>{for(const id in R[m])if(!a.some(x=>x.id==id)){delete R[m][id];w.push(()=>DB.doc(p+'/'+id).delete())}});
+const ds=new Set(S.log.map(l=>l.d));for(const id in R.log)if(!ds.has(id)){delete R.log[id];w.push(()=>DB.doc('log/'+id).delete())}
+const nw={};S.log.filter(l=>!l.d).forEach(l=>{const k=l.ty+':'+(l.o||'')+':'+l.t+(l.o?'':':'+l.i);(nw[k]=nw[k]||[]).push(l)});
+for(const k in nw){const a=nw[k],d=uid()+uid(),f=a[0];a.forEach(l=>l.d=d);R.log[d]=1;w.push(()=>DB.doc('log/'+d).set({t:f.t,ty:f.ty,o:f.o||0,L:a.map(l=>({i:l.i,n:l.n,q:l.q,p:l.p||0,c:l.c||0}))}))}
+const c={pin:S.pin,cur:S.cur};if(R.cfg!==J(c)){R.cfg=J(c);w.push(()=>DB.doc('config/main').set(c))}
+try{for(let i=0;i<w.length;i+=20)await Promise.all(w.slice(i,i+20).map(f=>f()))}catch(e){toast(t('syn'),1)}}
+function impf(f){if(!f)return;const r=new FileReader();r.onload=()=>{try{const o=JSON.parse(r.result);if(!Array.isArray(o.sec)||!Array.isArray(o.it)||!Array.isArray(o.log))throw 0;if(!confirm(t('imc')))return;S.sec=o.sec;S.it=o.it;S.log=o.log.map(l=>{const x={...l};delete x.d;return x});S.pin=o.pin||S.pin;S.cur=o.cur||S.cur;S.on=o.on||0;save();render();toast(t('imd'))}catch(e){toast(t('imx'),1)}};r.readAsText(f)}
+async function boot(){
+if(FB.apiKey.startsWith('PASTE')){fail=5;render();return}
+if(!SHOP){fail=4;render();return}
+let fs,F;const seen={};
+try{const B='https://www.gstatic.com/firebasejs/10.14.1/',[A,U,X]=await Promise.all([import(B+'firebase-app.js'),import(B+'firebase-auth.js'),import(B+'firebase-firestore.js')]);F=X;
+const app=A.initializeApp(FB),au=U.getAuth(app);
+try{fs=F.initializeFirestore(app,{localCache:F.persistentLocalCache({tabManager:F.persistentMultipleTabManager()})})}catch(e){fs=F.getFirestore(app)}
+await au.authStateReady();if(!au.currentUser)await U.signInAnonymously(au)}catch(e){fail=2;render();return}
+const base='shops/'+SHOP+'/';
+DB={doc:p=>({set:d=>F.setDoc(F.doc(fs,base+p),d),delete:()=>F.deleteDoc(F.doc(fs,base+p))}),collection:p=>({onSnapshot:(f,e)=>F.onSnapshot(F.collection(fs,base+p),f,e)})};
+setTimeout(()=>{if(rd<4){rd=4;fail=0;render()}},5000);
+const fr=()=>{const a=document.activeElement;if(rd>=4&&(M||P||(a&&/^(INPUT|SELECT)$/.test(a.tagName))))return;render()};
+const ldr=(p,fn)=>DB.collection(p).onSnapshot(s=>{fn(s.docs);if(!seen[p]&&(!s.metadata.fromCache||s.size>0)){seen[p]=1;if(++rd==4)fail=0}fr()},()=>{fail=3;render()});
+ldr('sections',d=>{S.sec=d.map(x=>({id:x.id,...x.data()})).sort((a,b)=>(a.ord||0)-(b.ord||0));R.sec={};d.forEach(x=>R.sec[x.id]=J(x.data()))});
+ldr('items',d=>{S.it=d.map(x=>({id:x.id,...x.data()})).sort((a,b)=>(a.ord||0)-(b.ord||0));R.it={};d.forEach(x=>R.it[x.id]=J(x.data()))});
+ldr('log',d=>{S.log=d.flatMap(x=>{const y=x.data();return(y.L||[]).map(l=>({...l,t:y.t,ty:y.ty,o:y.o||0,d:x.id}))}).sort((a,b)=>a.t-b.t);R.log={};d.forEach(x=>R.log[x.id]=1)});
+ldr('config',d=>{const x=d.find(y=>y.id=='main'),c=x?x.data():{};S.pin=c.pin||'';S.cur=c.cur||'$';R.cfg=x?J({pin:S.pin,cur:S.cur}):''})}
+function toast(x,bad){const e=g('ts');e.innerHTML=(bad?'':'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg>')+E(x);e.style.display='flex';clearTimeout(toast.h);toast.h=setTimeout(()=>e.style.display='none',3000)}
+async function hp(s){try{const b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('mm:'+s));return[...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,'0')).join('')}catch(e){return'p'+s}}
+const day0=ts=>{const d=new Date(ts);d.setHours(0,0,0,0);return+d};
+function stats(n){const f=day0(Date.now())-(n-1)*D,r={rev:0,pro:0,sp:0,top:{}};for(const l of S.log){if(l.t<f)continue;if(l.ty=='s'){const v=l.q*l.p,x=r.top[l.i]=r.top[l.i]||{n:l.n,rev:0,pro:0,q:0};r.rev+=v;r.pro+=v-l.q*l.c;x.rev+=v;x.pro+=v-l.q*l.c;x.q+=l.q}else r.sp+=l.q*l.c}return r}
+function bars(){const a=[],n=day0(Date.now());for(let i=6;i>=0;i--){const s=n-i*D;let rv=0,pr=0;for(const l of S.log)if(l.ty=='s'&&l.t>=s&&l.t<s+D){rv+=l.q*l.p;pr+=l.q*(l.p-l.c)}a.push({s,rv,pr})}const m=Math.max(...a.map(x=>x.rv),1);return'<div class="bars'+(anim?' an':'')+'">'+a.map(x=>`<i style="height:${Math.max(x.rv/m*100,4)}%"><b style="height:${x.rv?Math.max(x.pr,0)/x.rv*100:0}%"></b></i>`).join('')+'</div><div class="days">'+a.map(x=>`<span>${new Date(x.s).toLocaleDateString(S.lang,{weekday:'narrow'})}</span>`).join('')+'</div>'}
+const PH='<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M21 16l-5-5-8 8"/></svg>';
+const th=i=>i.img?`<img class="th" src="${i.img}" alt="">`:`<span class="th">${PH}</span>`;
+const row=i=>{const u=i.price-i.cost,mg=i.price?Math.round(u/i.price*100):0;return`<div class="it"><button class="ib" data-a="det" data-v="${i.id}">${th(i)}<span><span class="nm">${E(i.name)}</span><br><span class="sm">${admin?`<b class="ac">${u<0?'':'&lrm;+'}${$(u)}</b> · ${mg}% · ${t('cost')} ${$(i.cost)}`:$(i.price)}</span></span></button>${admin?`<button class="lnk" data-a="eitem" data-v="${i.id}">${t('edit')}</button>`:''}<button class="sell" data-a="qadd" data-v="${i.id}" aria-label="${t('add')}">+</button></div>`};
+const CV='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+function vItems(){return`<h1>${t('items')}</h1>`+S.sec.map(s=>{const a=S.it.filter(i=>i.sec==s.id),o=!!OP[s.id];return`<div class="sh sx"><h2 class="sg"><button class="sb" data-a="tog" data-v="${s.id}" aria-expanded="${o}"><span class="si">${s.ic||'🛒'}</span><span class="nm">${E(s.n)}</span><span class="sm">${a.length}</span></button></h2>${admin?`<button class="lnk" data-a="esec" data-v="${s.id}">${t('edit')}</button>`:''}<button class="cv${o?' o':''}" data-a="tog" data-v="${s.id}" aria-hidden="true" tabindex="-1">${CV}</button></div>`+(o?`<div class="bd${TG==s.id?' o':''}">${a.map(row).join('')}${admin?`<button class="add" data-a="nitem" data-v="${s.id}">${t('addi')}</button>`:''}</div>`:'')}).join('')+(admin?`<button class="add" data-a="nsec">${t('adds')}</button>`:'')}
+const bump=()=>{const c=document.querySelector('.cb');c&&c.classList.add('bump')};
+const cl=()=>Object.entries(cart).map(([id,q])=>({i:S.it.find(x=>x.id==id),q})).filter(x=>x.i&&x.q>0);
+let HN=30;
+function vHist(){const m={},o=[];for(const l of S.log){if(l.ty!='s')continue;const k=l.o?'o'+l.o:'t'+l.t+l.i;let x=m[k];if(!x){x=m[k]={o:l.o,t:l.t,L:[],D:[],s:0};o.push(x)}x.L.push(l);if(l.d&&!x.D.includes(l.d))x.D.push(l.d);x.s+=l.q*l.p}
+o.sort((a,b)=>b.t-a.t);return`<h1>${t('hist')}</h1>`+(o.length?o.slice(0,HN).map(x=>`<div class="card"><div class="sh" style="margin:0 0 4px"><b>${x.o?t('ord')+' #'+x.o:t('ord')}</b><b class="ac">${$(x.s)}</b></div><div style="font-weight:500;margin-bottom:4px">${new Date(x.t).toLocaleTimeString(S.lang,{hour:'numeric',minute:'2-digit'})} <span class="sm">· ${new Date(x.t).toLocaleDateString(S.lang,{weekday:'short',day:'numeric',month:'short'})}</span></div>${x.L.map(l=>`<div class="sh" style="margin:8px 0 0"><span>${E(l.n)} <span class="sm">×${l.q}</span></span><span>${$(l.q*l.p)}</span></div>`).join('')}<button class="sec del" data-a="odel" data-v="${x.D.join(',')}">${t('del')}</button></div>`).join('')+(o.length>HN?`<button class="add" data-a="more">${t('more')}</button>`:''):`<p class="sm">${t('nord')}</p>`)}
+function vOv(){const r=stats({today:1,week:7,month:30,year:365}[per]),tp=Object.values(r.top).sort((a,b)=>b.rev-a.rev).slice(0,5);return`<h1>${t('ov')}</h1><div class="seg">${['today','week','month','year'].map(p=>`<button data-a="per" data-v="${p}" class="${p==per?'on':''}">${t(p)}</button>`).join('')}</div><div class="card"><div class="lb">${t('rev')}</div><div class="big cu" data-n="${r.rev}">${$(r.rev)}</div>${bars()}</div><div class="row2"><div class="card"><div class="lb">${t('pro')}</div><div class="big ac cu" data-n="${r.pro}">${$(r.pro)}</div><div class="sm">${r.rev?Math.round(r.pro/r.rev*100):0}% ${t('margin')}</div></div><div class="card"><div class="lb">${t('spent')}</div><div class="big cu" data-n="${r.sp}">${$(r.sp)}</div></div></div><div class="card"><b>${t('top')}</b>${tp.length?tp.map(x=>`<div class="sh" style="margin:8px 0 0"><span>${E(x.n)} <span class="sm">×${x.q}</span></span><span>${$(x.rev)} <b class="ac">${$(x.pro)}</b></span></div>`).join(''):`<p class="sm">${t('none')}</p>`}</div>`}
+function vBuy(){if(!S.it.length)return`<h1>${t('buy')}</h1><p class="sm">${t('noit')}</p><button class="pri" data-a="tab" data-v="items">${t('items')}</button>`;const f=S.sec.map(s=>S.it.find(i=>i.sec==s.id)).find(Boolean)||S.it[0],rc=S.log.filter(l=>l.ty=='p').slice(-5).reverse(),td=new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,10);return`<h1>${t('buy')}</h1><form id="pf" class="card"><label for="pi" style="margin-top:0">${t('item')}</label><select id="pi">${S.sec.map(s=>{const a=S.it.filter(i=>i.sec==s.id);return a.length?`<optgroup label="${E(s.n)}">${a.map(i=>`<option value="${i.id}">${E(i.name)}</option>`).join('')}</optgroup>`:''}).join('')}</select><label for="pq">${t('qty')}</label><input id="pq" type="number" min="1" step="1" inputmode="numeric" required><label for="pc">${t('costu')}</label><input id="pc" type="number" min="0" step="0.01" inputmode="decimal" required value="${f.cost}"><label for="ps">${t('price')}</label><input id="ps" type="number" min="0" step="0.01" inputmode="decimal" required value="${f.price}"><label for="pd">${t('date')}</label><input id="pd" type="date" required value="${td}"><button class="pri">${t('savep')}</button></form><div class="card"><b>${t('recent')}</b>${rc.length?rc.map(l=>`<div class="sh" style="margin:8px 0 0"><span>${E(l.n)} <span class="sm">×${l.q}</span></span><span>${$(l.q*l.c)}</span></div>`).join(''):`<p class="sm">${t('none')}</p>`}</div>`}
+function vAdm(){return`<h1>${t('adm')}</h1><div class="card"><div class="lb">${t('lang')}</div><div class="seg" style="margin:8px 0 0"><button data-a="lang" data-v="en" class="${S.lang=='en'?'on':''}">English</button><button data-a="lang" data-v="ar" class="${S.lang=='ar'?'on':''}">العربية</button></div></div><div class="card"><label for="cu" style="margin-top:0">${t('cur')}</label><input id="cu" value="${E(S.cur)}" maxlength="4"></div><button class="pri" data-a="chgp">${t('chgp')}</button><button class="sec" data-a="lock">${t('lock')}</button><button class="sec" data-a="exp">${t('exp')}</button><label class="sec" for="imp" style="display:flex;align-items:center;justify-content:center;margin:4px 0 0;font-size:15px;color:var(--mu)">${t('imp2')}</label><input id="imp" type="file" accept="application/json,.json" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none"><p class="sm ctr">${t('note')}</p>`}
+function sheet(){const m=M,x=(k,c)=>`<button type="button" class="sec ${c||''}" data-a="${k}">${t(k=='cancel'?'cancel':'del')}</button>`;
+if(m.k=='d'){const i=S.it.find(y=>y.id==m.id);return`<div class="ov${m.s?'':' fd'}"><div class="sh2${m.s?'':' up'}" role="dialog" aria-modal="true">${i.img?`<img class="hero" src="${i.img}" alt="">`:`<div class="hero">${PH}</div>`}<h1 style="margin:0">${E(i.name)}</h1><p class="big ac" style="font-size:24px;margin:4px 0 16px">${$(i.price)}</p><div style="display:flex;gap:12px"><div class="stp"><button class="qb" data-a="dm" aria-label="−">−</button><b>${m.q}</b><button class="qb" data-a="dp" aria-label="+">+</button></div><button class="pri" style="margin:0;flex:1" data-a="dadd">${t('add')} · ${$(m.q*i.price)}</button></div><button class="sec" data-a="cancel">${t('cancel')}</button></div></div>`}
+if(m.k=='c'){const c=cl();return`<div class="ov${m.s?'':' fd'}"><div class="sh2${m.s?'':' up'}" role="dialog" aria-modal="true"><h1>${t('cart')}</h1>${c.length?c.map(x=>`<div class="ln"><span class="nm">${E(x.i.name)}</span><button class="qb" data-a="om" data-v="${x.i.id}" aria-label="−">−</button><b>${x.q}</b><button class="qb" data-a="op" data-v="${x.i.id}" aria-label="+">+</button><span class="sm">${$(x.q*x.i.price)}</span></div>`).join(''):`<p class="sm">${t('empty')}</p>`}<div class="sh"><b>${t('total')}</b><span class="big" style="font-size:22px">${$(c.reduce((a,x)=>a+x.q*x.i.price,0))}</span></div><button class="pri" style="margin-top:0" data-a="place"${c.length?'':' disabled'}>${t('check')}</button>${c.length?`<button class="sec del" data-a="oclr">${t('clear')}</button>`:''}<button class="sec" data-a="cancel">${t('cancel')}</button></div></div>`}
+if(m.k=='s')return`<div class="ov${m.s?'':' fd'}"><form id="f" class="sh2${m.s?'':' up'}" data-k="s" role="dialog" aria-modal="true"><h1>${t(m.id?'esc':'nsc')}</h1><label for="fn">${t('name')}</label><input id="fn" required value="${E(m.n||'')}"><label>${t('icon')}</label><div class="seg" style="flex-wrap:wrap">${IL.map(e=>`<button type="button" data-a="pic" data-v="${e}" class="${(m.ic||'🛒')==e?'on':''}" style="flex:0 0 calc(25% - 5px);font-size:22px">${e}</button>`).join('')}</div><button class="pri">${t('save')}</button>${m.id?x('dsec','del'):''}${x('cancel')}</form></div>`;
+const i=m.i;return`<div class="ov${m.s?'':' fd'}"><form id="f" class="sh2${m.s?'':' up'}" data-k="i" role="dialog" aria-modal="true"><h1>${t(m.id?'eit':'nit')}</h1><div style="display:flex;gap:16px;align-items:center"><span id="pv">${th(i)}</span><label class="lnk" id="pl" for="ph" style="display:flex;align-items:center;margin:0;font-size:15px;color:var(--ac)">${t(i.img?'chg':'photo')}</label><input id="ph" type="file" accept="image/*" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none"></div><label for="fn">${t('name')}</label><input id="fn" required value="${E(i.name)}"><label for="fs">${t('sec')}</label><select id="fs">${S.sec.map(s=>`<option value="${s.id}"${s.id==i.sec?' selected':''}>${E(s.n)}</option>`).join('')}</select><div class="row2"><div><label for="fc">${t('cost')}</label><input id="fc" type="number" min="0" step="0.01" inputmode="decimal" required value="${i.cost}"></div><div><label for="fp">${t('price')}</label><input id="fp" type="number" min="0" step="0.01" inputmode="decimal" required value="${i.price}"></div></div><div class="card" style="margin:12px 0 0;display:flex;justify-content:space-between"><span class="lb">${t('ppu')}</span><b id="pr" class="ac"></b></div><button class="pri">${t('save')}</button>${m.id?x('ditem','del'):''}${x('cancel')}</form></div>`}
+function upd(){if(!g('pr'))return;const c=g('fc').value,p=g('fp').value,u=p-c;g('pr').textContent=c&&p?`${u<0?'':'\u200e+'}${$(u)} · ${+p?Math.round(u/p*100):0}%`:'—'}
+const pinH=()=>{const k={enter:'pe',new:'pn',conf:'pc'}[P.mode];return`<div class="ov${P.s?'':' fd'}"><div class="sh2${P.s?'':' up'}" role="dialog" aria-modal="true" aria-label="${t(k)}"><div class="ctr"><h1 style="margin:0">${t(k)}</h1><div class="dots${P.sk?' sk':''}" role="img" aria-label="${P.buf.length}/4">${[0,1,2,3].map(n=>`<i class="${n<P.buf.length?'f'+(n==P.buf.length-1?' n':''):''}"></i>`).join('')}</div><p class="sm" role="status" style="min-height:20px;margin:0;color:var(--rd)">${P.err}</p></div><div class="pad">${[1,2,3,4,5,6,7,8,9].map(n=>`<button data-a="key" data-v="${n}">${n}</button>`).join('')}<span></span><button data-a="key" data-v="0">0</button><button data-a="bk" aria-label="${t('del')}"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 5H9l-6 7 6 7h12z"/><path d="M13 9l4 6M17 9l-4 6"/></svg></button></div><button class="sec" data-a="pcancel">${t('cancel')}</button></div></div>`};
+const IC={hist:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',items:'<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',ov:'<path d="M5 20v-8M12 20V5M19 20v-5"/>',buy:'<path d="M12 3v12M7 10l5 5 5-5M4 20h16"/>',adm:'<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/>',lk:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/>'};
+function cup(){if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;document.querySelectorAll('.cu').forEach(e=>{const n=+e.dataset.n,s=performance.now();(function f(w){const q=Math.min((w-s)/700,1);e.textContent=$(q<1?Math.round(n*(1-Math.pow(1-q,3))):n);if(q<1)requestAnimationFrame(f)})(s)})}
+function render(a){anim=a||0;const L=S.lang,v=admin?view:'items';document.documentElement.lang=L;document.documentElement.dir=L=='ar'?'rtl':'ltr';if(rd<4){g('app').innerHTML=fail==4?`<div class="card"><h2>${t('shop')}</h2><p class="sm">${t('shopn')}</p><input id="sc" value="${SC0}" autocomplete="off" autocapitalize="none"><button class="pri" data-a="sc">${t('conn2')}</button></div>`:`<div class="card ctr"><p>${t(fail==5?'setup':fail?'offl':'conn')}</p></div>`;return}g('app').innerHTML=`<main${a?' class="in"':''}>`+{items:vItems,hist:vHist,ov:vOv,buy:vBuy,adm:vAdm}[v]()+'</main>'+(!M&&!P&&v=='items'&&cl().length?`<button class="cb" data-a="cart"><span>${t('cart')} · ${cl().reduce((a,x)=>a+x.q,0)}</span><span>${$(cl().reduce((a,x)=>a+x.q*x.i.price,0))}</span></button>`:'')+(M?sheet():'')+(P?pinH():'')+`<nav>${['items','hist','ov','buy','adm'].map(k=>`<button data-a="tab" data-v="${k}" class="${k==v?'on':''}" aria-current="${k==v?'page':'false'}"><span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[k=='adm'&&!admin?'lk':k]}</svg></span>${t(k)}</button>`).join('')}</nav>`;if(M){M.s=1;if(M.k=='i')upd()}if(P)P.s=1;if(anim&&v=='ov')cup()}
+function need(fn){if(admin)return fn();P={mode:S.pin?'enter':'new',fn,buf:'',first:'',err:''};render()}
+async function pk(d){if(P.buf.length>=4)return;navigator.vibrate&&navigator.vibrate(8);P.sk=0;P.buf+=d;render();if(P.buf.length<4)return;const b=P.buf,h=await hp(b);if(!P)return;P.buf='';
+if(P.mode=='enter'){if(h==S.pin){const f=P.fn;P=null;admin=true;f()}else{P.err=t('pbad');P.sk=1}}
+else if(P.mode=='new'){P.first=b;P.mode='conf';P.err=''}
+else if(b==P.first){S.pin=h;save();const f=P.fn;P=null;admin=true;f()}else{P.mode='new';P.err=t('pmis');P.sk=1}
+render()}
+function photo(f){if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement('canvas'),s=Math.min(im.width,im.height);c.width=c.height=160;c.getContext('2d').drawImage(im,(im.width-s)/2,(im.height-s)/2,s,s,0,0,160,160);M.i.img=c.toDataURL('image/jpeg',.7);g('pv').innerHTML=th(M.i);g('pl').textContent=t('chg')};im.onerror=()=>toast(t('phe'),1);im.src=r.result};r.readAsDataURL(f)}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;const a=b.dataset.a,v=b.dataset.v,it=()=>S.it.find(i=>i.id==v);
+if(a=='tab'){v=='items'?(view=v,render(1)):need(()=>{view=v;render(1)});return}
+if(a=='per'){per=v;render(1)}
+else if(a=='qadd'){cart[v]=(cart[v]||0)+1;const r=b.getBoundingClientRect();render();bump();navigator.vibrate&&navigator.vibrate(10);const f=document.createElement('span');f.className='fl';f.textContent='+1';f.style.left=r.left+r.width/2+'px';f.style.top=r.top+'px';document.body.append(f);setTimeout(()=>f.remove(),800)}
+else if(a=='tog'){if(OP[v])delete OP[v];else OP[v]=1;TG=OP[v]?v:null;render();TG=null}
+else if(a=='det'){M={k:'d',id:v,q:1};render()}
+else if(a=='dm'){M.q=Math.max(1,M.q-1);render()}
+else if(a=='dp'){M.q++;render()}
+else if(a=='dadd'){cart[M.id]=(cart[M.id]||0)+M.q;M=null;render();bump();navigator.vibrate&&navigator.vibrate(10)}
+else if(a=='cart'){M={k:'c'};render()}
+else if(a=='more'){HN+=30;render()}
+else if(a=='sc'){const c=g('sc').value.trim().replace(/[^\w-]/g,'');if(c.length<8){toast(t('sch'),1);return}try{localStorage.setItem(K+'-shop',c)}catch(e){}SHOP=c;fail=0;render();boot()}
+else if(a=='exp'){const o={sec:S.sec,it:S.it,log:S.log.map(l=>{const x={...l};delete x.d;return x}),pin:S.pin,cur:S.cur,on:S.on},u=URL.createObjectURL(new Blob([JSON.stringify(o)],{type:'application/json'})),k=document.createElement('a');k.href=u;k.download='market-backup.json';k.click()}
+else if(a=='odel'){if(!b.dataset.c){b.dataset.c=1;b.textContent=t('sure');return}const ids=v.split(',');S.log=S.log.filter(l=>!ids.includes(l.d));save();render()}
+else if(a=='op'){cart[v]=(cart[v]||0)+1;render()}
+else if(a=='om'){if(cart[v]>1)cart[v]--;else delete cart[v];render()}
+else if(a=='oclr'){cart={};M=null;render()}
+else if(a=='place'){const c=cl();if(!c.length)return;S.on=Math.max(S.on,...S.log.map(l=>l.o||0))+1;const n=Date.now();c.forEach(({i,q})=>S.log.push({t:n,ty:'s',i:i.id,n:i.name,q,p:i.price,c:i.cost,o:S.on}));cart={};M=null;if(save())toast(t('placed')+' #'+S.on);navigator.vibrate&&navigator.vibrate([12,40,12]);render();const k=document.createElement('div');k.className='ok';k.innerHTML='<i><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10"/></svg></i>';document.body.append(k);setTimeout(()=>k.remove(),900)}
+else if(a=='eitem')need(()=>{M={k:'i',id:v,i:{...it()}};render()});
+else if(a=='nitem')need(()=>{M={k:'i',i:{sec:v,name:'',cost:'',price:'',stock:0,low:0,img:''}};render()});
+else if(a=='esec')need(()=>{M={k:'s',id:v,n:S.sec.find(s=>s.id==v).n,ic:S.sec.find(s=>s.id==v).ic};render()});
+else if(a=='nsec')need(()=>{M={k:'s',ic:'🛒'};render()});
+else if(a=='cancel'){M=null;render()}
+else if(a=='dsec'||a=='ditem'){if(!b.dataset.c){b.dataset.c=1;b.textContent=t('sure');return}
+if(a=='dsec'){if(S.it.some(i=>i.sec==M.id)){toast(t('secfull'),1);return}S.sec=S.sec.filter(s=>s.id!=M.id)}else S.it=S.it.filter(i=>i.id!=M.id);M=null;save();render()}
+else if(a=='pic'){const n=g('fn');if(n)M.n=n.value;M.ic=v;render()}
+else if(a=='lang'){S.lang=v;save();render()}
+else if(a=='chgp'){P={mode:'new',fn:render,buf:'',first:'',err:''};render()}
+else if(a=='lock'){admin=false;view='items';render()}
+else if(a=='key')pk(v);
+else if(a=='bk'){P.sk=0;P.buf=P.buf.slice(0,-1);render()}
+else if(a=='pcancel'){P=null;render()}});
+document.addEventListener('submit',e=>{e.preventDefault();const f=e.target;
+if(f.id=='pf'){const i=S.it.find(x=>x.id==g('pi').value),q=+g('pq').value,c=+g('pc').value;i.cost=c;i.price=+g('ps').value;S.log.push({t:new Date(g('pd').value+'T12:00').getTime(),ty:'p',i:i.id,n:i.name,q,c});if(save())toast(t('saved'));render();return}
+if(f.dataset.k=='s'){const n=g('fn').value.trim();if(M.id){const s=S.sec.find(s=>s.id==M.id);s.n=n;s.ic=M.ic}else{const id=uid();S.sec.push({id,n,ic:M.ic||'🛒'});OP[id]=1}}
+else{const o={sec:g('fs').value,name:g('fn').value.trim(),cost:+g('fc').value,price:+g('fp').value,img:M.i.img};if(M.id)Object.assign(S.it.find(i=>i.id==M.id),o);else S.it.push({id:uid(),ord:Date.now(),...o})}
+M=null;save();render()});
+document.addEventListener('change',e=>{const i=e.target.id;if(i=='cu'){S.cur=e.target.value.trim()||'$';save()}else if(i=='pi'){const x=S.it.find(y=>y.id==e.target.value);g('pc').value=x.cost;g('ps').value=x.price}else if(i=='ph')photo(e.target.files[0]);else if(i=='imp')impf(e.target.files[0])});
+document.addEventListener('input',()=>{if(M&&M.k=='i')upd()});
+document.addEventListener('keydown',e=>{if(P){if(/^\d$/.test(e.key))pk(e.key);else if(e.key=='Backspace'){P.buf=P.buf.slice(0,-1);render()}else if(e.key=='Escape'){P=null;render()}}else if(M&&e.key=='Escape'){M=null;render()}});
+render();boot();
+</script>
+</body>
+</html>
